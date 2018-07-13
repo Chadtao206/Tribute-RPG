@@ -17,6 +17,14 @@ function createWarrior(){
     $("#maxExp").html(hero.stats.level*100);
     $("#currentMana").html(hero.stats.magic);
     $("#maxMana").html(hero.stats.magic);
+    $(".gamescreen").empty();
+    $(".class").append("<img src='assets/images/warrior.png' class='iconSmall'/>")
+    hero.basicInfo.name = "Chuck";
+    hero.basicInfo.sex = "Male";
+    hero.basicInfo.race = "Human";
+    hero.basicInfo.class = "Warrior";
+    hero.basicInfo.age = "78";
+    intro();
 }
 //Archer
 function createArcher(){
@@ -30,6 +38,14 @@ function createArcher(){
     $("#maxExp").html(hero.stats.level*100);
     $("#currentMana").html(hero.stats.magic);
     $("#maxMana").html(hero.stats.magic);
+    $(".gamescreen").empty();
+    $(".class").append("<img src='assets/images/archer.png' class='iconSmall'/>")
+    hero.basicInfo.name = "Archer";
+    hero.basicInfo.sex = "Male";
+    hero.basicInfo.race = "Human";
+    hero.basicInfo.class = "Archer";
+    hero.basicInfo.age = "36";
+    intro();
 }
 //Healer
 function createHealer(){
@@ -43,6 +59,14 @@ function createHealer(){
     $("#maxExp").html(hero.stats.level*100);
     $("#currentMana").html(hero.stats.magic);
     $("#maxMana").html(hero.stats.magic);
+    $(".gamescreen").empty();
+    $(".class").append("<img src='assets/images/healer.png' class='iconSmall'/>")
+    hero.basicInfo.name = "Bob";
+    hero.basicInfo.sex = "Male";
+    hero.basicInfo.race = "Human";
+    hero.basicInfo.class = "Healer";
+    hero.basicInfo.age = "36";
+    intro();
 }
 //Mage
 function createMage(){
@@ -56,7 +80,50 @@ function createMage(){
     $("#maxExp").html(hero.stats.level*100);
     $("#currentMana").html(hero.stats.magic);
     $("#maxMana").html(hero.stats.magic);
+    $(".gamescreen").empty();
+    $(".class").append("<img src='assets/images/mage.png' class='iconSmall'/>")
+    hero.basicInfo.name = "Dave";
+    hero.basicInfo.sex = "Male";
+    hero.basicInfo.race = "Human";
+    hero.basicInfo.class = "Mage";
+    hero.basicInfo.age = "61";
+    intro();
 }
+
+//Character Intro/Start Game
+function intro(){
+    $(".gamescreen").append("<h2 class='w3-container w3-center w3-animate-opacity' style='font-weight:bold'>"+"Welcome to Tribute, "+hero.basicInfo.name+" the "+hero.basicInfo.class+"</h2>");
+    $(".gamescreen").append("<h3 class='w3-container w3-center w3-animate-opacity intro'>"+"You are a hero who was prophesied to bring about peace to this magical land. 1000 years ago, a dark lord known as King Dragon came from another dimension and laid waste to this kingdom. He was powerful and ruthless, even our most formidable champions could not draw a single drop of blood from him. Our king devised a plan to send you - our bravest champion 1000 years into the future. Now the kingdom is in ruins, but King Dragon has lowered his guard and is weakened by old age. Although he has surrounded himself with dark champions of his dimension, this was foretold to be our greatest chance to defeat him and his dark forces once and for all, and return this kingdom to its former glory! Champion, are you ready? "+"</h2>");
+    $(".gamescreen").append("<button class='button begin'>"+"Begin Adventure"+"</button>");
+    $(".begin").on("click", function(){
+        $(".gamescreen").html("<img src='assets/images/kingdom.jpg' class='gamebg background'/>");
+        $(".gamescreen").append("<div class='block1'>"+"</div>");
+        $(".gamescreen").append("<div class='block2'>"+"</div>");
+        $(".gamescreen").append("<div class='block3'>"+"</div>");
+        $(".gamescreen").append("<div class='block4'>"+"</div>");
+        $(".gamescreen").append("<div class='block5'>"+"</div>");
+        $(".gamescreen").append("<div class='block6'>"+"</div>");
+        $(".gamescreen").append("<div class='block7'>"+"</div>");
+        $(".gamescreen").append("<div class='block8'>"+"</div>");
+        $(".gamescreen").append("<div class='block9'>"+"</div>");
+        $(".iconSmall").clone().toggleClass('iconSmaller').removeClass('iconSmall').appendTo(".block1");
+        $(".block2").append("<img class='iconSmaller' src='assets/images/boss1.png'/>");
+        $(".block3").append("<img class='iconSmaller' src='assets/images/boss2.png'/>");
+        $(".block4").append("<img class='iconSmaller' src='assets/images/boss3.png'/>");
+        $(".block5").append("<img class='iconSmaller' src='assets/images/boss4.png'/>");
+        $(".block6").append("<img class='iconSmaller' src='assets/images/boss5.png'/>");
+        $(".block7").append("<img class='iconSmaller' src='assets/images/boss6.png'/>");
+        $(".block8").append("<img class='iconSmaller' src='assets/images/boss7.png'/>");
+        $(".block9").append("<img class='iconSmaller' src='assets/images/boss8.png'/>");
+        $(".menu").append("<hr>"+"<div class='row justify-content-center' style='margin:15px; font-size:20px; font-weight:bold; color:gold;'>"+"Choose An Action"+"</div>"+"<hr>");
+        $(".menu").append("<div class='row justify-content-center menubox'>"+"<button type='button' class='btn btn-primary btn-lg' id='explore' data-toggle='tooltip' data-placement='left' title='Explore the ruins of the Fallen Kingdom, you may find things to aid your adventure.'>"+"Explore"+"</button>"+"</div>");
+        $(".menu").append("<div class='row justify-content-center menubox'>"+"<button type='button' class='btn btn-primary btn-lg' id='quest' data-toggle='tooltip' data-placement='left' title='Help out the villagers and earn gold as a reward.'>"+"Quest"+"</button>"+"</div>");
+        $(".menu").append("<div class='row justify-content-center menubox'>"+"<button type='button' class='btn btn-primary btn-lg' id='minion' data-toggle='tooltip' data-placement='left' title='Fight minions to hone your skills.'>"+"Fight Minion"+"</button>"+"</div>");
+        $(".menu").append("<div class='row justify-content-center menubox'>"+"<button type='button' class='btn btn-primary btn-lg' id='general' data-toggle='tooltip' data-placement='left' title='Are you ready to take on a general for epic rewards?'>"+"Fight General"+"</button>"+"</div>");
+        $(".menu").append("<div class='row justify-content-center menubox'>"+"<button type='button' class='btn btn-primary btn-lg' id='sleep' data-toggle='tooltip' data-placement='left' title='Rest for a day to fully recuperate'>"+"Make Camp"+"</button>"+"</div>");
+    })
+}
+
 
 function interface(){
     $("body").empty();
@@ -105,6 +172,11 @@ function interface(){
         createHealer();
     })
 
+//Game Interface
+    $(".begin").on("click", function(){
+        alert("clicked");
+    })
+
 }
 $(document).ready(function () {
 
@@ -112,5 +184,7 @@ $(document).ready(function () {
 $("button").on("click", function(){
     interface();
 })
+
+
 
 })

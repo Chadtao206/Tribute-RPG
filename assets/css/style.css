@@ -64,10 +64,10 @@
   }
 
   .status, .level, .turns {
-      font-size:25px;
+      font-size:20px;
       font-weight:bold;
       color:greenyellow;
-      margin:15px;
+      margin:10px;
   }
 
   .classIcon {
@@ -100,4 +100,145 @@
       padding-top:400px;
       font-family: 'Galada', cursive;
       font-size: 35px;
+  }
+
+  .iconSmall {
+      height: 90px;
+      width: 90px;
+      padding-top:6px;
+  }
+
+  .intro {
+    font-family: 'Galada', cursive;
+    font-size: 25px;
+  }
+
+  .begin {
+    margin: 10px 0 0 260px;
+  }
+
+  .menubox {
+    margin-bottom: 30px;
+  } 
+
+  .gamebg {
+    height:497px;
+    width:110%;
+    position: relative;
+    right:14px;
+  }
+
+  div.block1 {
+      border-color:black;
+      border-width:5px;
+      border-style:solid;
+      height:60px;
+      width:60px;
+      z-index: inherit 1;;
+      position: relative;
+      bottom:180px;
+      left:90px;
+  }
+
+  div.block2 {
+    border-color:black;
+    border-width:5px;
+    border-style:solid;
+    height:60px;
+    width:60px;
+    z-index: inherit 1;;
+    position: relative;
+    bottom:240px;
+    left:190px;
+}
+
+div.block3 {
+    border-color:black;
+    border-width:5px;
+    border-style:solid;
+    height:60px;
+    width:60px;
+    z-index: inherit 1;;
+    position: relative;
+    bottom:300px;
+    left:290px;
+}
+
+div.block4 {
+    border-color:black;
+    border-width:5px;
+    border-style:solid;
+    height:60px;
+    width:60px;
+    z-index: inherit 1;;
+    position: relative;
+    bottom:360px;
+    left:390px;
+}
+
+div.block5 {
+    border-color:black;
+    border-width:5px;
+    border-style:solid;
+    height:60px;
+    width:60px;
+    z-index: inherit 1;;
+    position: relative;
+    bottom:420px;
+    left:490px;
+}
+
+div.block6 {
+    border-color:black;
+    border-width:5px;
+    border-style:solid;
+    height:60px;
+    width:60px;
+    z-index: inherit 1;;
+    position: relative;
+    bottom:480px;
+    left:590px;
+}
+
+div.block7 {
+    border-color:black;
+    border-width:5px;
+    border-style:solid;
+    height:60px;
+    width:60px;
+    z-index: inherit 1;;
+    position: relative;
+    bottom:640px;
+    left:590px;
+}
+
+div.block8 {
+    border-color:black;
+    border-width:5px;
+    border-style:solid;
+    height:60px;
+    width:60px;
+    z-index: inherit 1;;
+    position: relative;
+    bottom:700px;
+    left:450px;
+}
+
+div.block9 {
+    border-color:black;
+    border-width:5px;
+    border-style:solid;
+    height:60px;
+    width:60px;
+    z-index: inherit 1;;
+    position: relative;
+    bottom:860px;
+    left:450px;
+}
+
+  .iconSmaller {
+      height:50px;
+      width:50px;
+      padding:none;
+      background-color:wheat;
   }
