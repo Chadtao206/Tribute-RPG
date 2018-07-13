@@ -85,6 +85,7 @@
   .icon {
       height:150px;
       width:150px;
+      cursor: pointer;
   }
 
   .title {
@@ -284,3 +285,8 @@ div.block9 {
     padding-top:20px;
 }
 
+.shop {
+    position:relative;
+    bottom:1010px;
+    cursor: pointer;
+}
