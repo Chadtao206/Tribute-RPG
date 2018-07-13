@@ -236,9 +236,51 @@ div.block9 {
     left:450px;
 }
 
-  .iconSmaller {
-      height:50px;
-      width:50px;
-      padding:none;
-      background-color:wheat;
-  }
+.iconSmaller {
+    height:50px;
+    width:50px;
+    padding:none;
+    background-color:wheat;
+}
+
+.skills {
+    border-width:5px;
+    border-style:double;
+    border-color:white;
+    height:150px;
+    width:100%;
+    padding-left:35px;
+}
+
+.skill {
+    border-width:5px;
+    border-style:solid;
+    border-color:#3B99E2;
+    height:100px;
+    width:100px;
+    float:left;
+    margin:4px;
+    margin-top:20px;
+    font-size:20px;
+    font-weight:bold;
+    color:white;
+    padding-left:5px;
+}
+
+.items {
+    border-width:3px;
+    border-style:solid;
+    border-color:blanchedalmond;
+    height:50px;
+    width:50px;
+    float:left;
+    margin:1px;
+    font-size:10px;
+    font-weight:bold;
+    color:white;
+}
+
+.consumable {
+    padding-top:20px;
+}
+

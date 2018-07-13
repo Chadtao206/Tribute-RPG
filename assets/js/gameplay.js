@@ -121,6 +121,32 @@ function intro(){
         $(".menu").append("<div class='row justify-content-center menubox'>"+"<button type='button' class='btn btn-primary btn-lg' id='minion' data-toggle='tooltip' data-placement='left' title='Fight minions to hone your skills.'>"+"Fight Minion"+"</button>"+"</div>");
         $(".menu").append("<div class='row justify-content-center menubox'>"+"<button type='button' class='btn btn-primary btn-lg' id='general' data-toggle='tooltip' data-placement='left' title='Are you ready to take on a general for epic rewards?'>"+"Fight General"+"</button>"+"</div>");
         $(".menu").append("<div class='row justify-content-center menubox'>"+"<button type='button' class='btn btn-primary btn-lg' id='sleep' data-toggle='tooltip' data-placement='left' title='Rest for a day to fully recuperate'>"+"Make Camp"+"</button>"+"</div>");
+    
+        //action bar
+        $(".action").append("<div class='col-lg-7 skills'>"+"</div>");
+        $(".skills").append("<div class='skill skill1'>"+"1"+"</div>");
+        $(".skills").append("<div class='skill skill2'>"+"2"+"</div>");
+        $(".skills").append("<div class='skill skill3'>"+"3"+"</div>");
+        $(".skills").append("<div class='skill skill4'>"+"4"+"</div>");
+        $(".skills").append("<div class='skill skill5'>"+"5"+"</div>");
+        $(".action").append("<div class='col-lg-5 consumable'>"+"</div>");
+        $(".consumable").append("<div class='items item1'"+"</div>");
+        $(".consumable").append("<div class='items item2'"+"</div>");
+        $(".consumable").append("<div class='items item3'"+"</div>");
+        $(".consumable").append("<div class='items item4'"+"</div>");
+        $(".consumable").append("<div class='items item5'"+"</div>");
+        $(".consumable").append("<div class='items item6'"+"</div>");
+        $(".consumable").append("<div class='items item7'"+"</div>");
+        $(".consumable").append("<div class='items item8'"+"</div>");
+        $(".consumable").append("<div class='items item9'"+"</div>");
+        $(".consumable").append("<div class='items item10'"+"</div>");
+        $(".consumable").append("<div class='items item11'"+"</div>");
+        $(".consumable").append("<div class='items item12'"+"</div>");
+        $(".consumable").append("<div class='items item13'"+"</div>");
+        $(".consumable").append("<div class='items item14'"+"</div>");
+        $(".consumable").append("<div class='items item15'"+"</div>");
+        $(".consumable").append("<div class='items item16'"+"</div>");
+
     })
 }
 
