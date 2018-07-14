@@ -40,6 +40,7 @@
     background: #3B99E2;
     height:500px;
     border-width: 10px;
+    background-size:cover;
 }
 
 .menu {
@@ -135,7 +136,7 @@
       border-style:solid;
       height:60px;
       width:60px;
-      z-index: inherit 1;;
+      z-index: 1;;
       position: relative;
       bottom:180px;
       left:90px;
@@ -147,7 +148,7 @@
     border-style:solid;
     height:60px;
     width:60px;
-    z-index: inherit 1;;
+    z-index: 1;;
     position: relative;
     bottom:240px;
     left:190px;
@@ -159,7 +160,7 @@ div.block3 {
     border-style:solid;
     height:60px;
     width:60px;
-    z-index: inherit 1;;
+    z-index: 1;;
     position: relative;
     bottom:300px;
     left:290px;
@@ -171,7 +172,7 @@ div.block4 {
     border-style:solid;
     height:60px;
     width:60px;
-    z-index: inherit 1;;
+    z-index: 1;;
     position: relative;
     bottom:360px;
     left:390px;
@@ -183,7 +184,7 @@ div.block5 {
     border-style:solid;
     height:60px;
     width:60px;
-    z-index: inherit 1;;
+    z-index: 1;;
     position: relative;
     bottom:420px;
     left:490px;
@@ -195,7 +196,7 @@ div.block6 {
     border-style:solid;
     height:60px;
     width:60px;
-    z-index: inherit 1;;
+    z-index: 1;;
     position: relative;
     bottom:480px;
     left:590px;
@@ -207,7 +208,7 @@ div.block7 {
     border-style:solid;
     height:60px;
     width:60px;
-    z-index: inherit 1;;
+    z-index: 1;;
     position: relative;
     bottom:640px;
     left:590px;
@@ -219,7 +220,7 @@ div.block8 {
     border-style:solid;
     height:60px;
     width:60px;
-    z-index: inherit 1;;
+    z-index: 1;;
     position: relative;
     bottom:700px;
     left:450px;
@@ -231,9 +232,10 @@ div.block9 {
     border-style:solid;
     height:60px;
     width:60px;
-    z-index: inherit 1;;
+    z-index: 1;;
     position: relative;
     bottom:860px;
+    margin-bottom:-860px;
     left:450px;
 }
 
@@ -286,7 +288,76 @@ div.block9 {
 }
 
 .shop {
-    position:relative;
-    bottom:1010px;
+    position:absolute;
     cursor: pointer;
+    top:20px;
+}
+
+.back {
+    position:relative;
+    top:30px;
+    cursor:pointer;
+    z-index:1;
+}
+
+#shopTitle {
+    position:relative;
+    top:-40px;
+    padding-left:250px;
+    font-weight:bold;
+    font-family: 'Galada', cursive;
+    color:wheat;
+    font-size:40px;
+}
+
+.card-text {
+    font-size:10px;
+    font-weight:bold;
+    text-align:center;
+}
+
+.card {
+    float:left;
+    margin-left:20px;
+    margin-top:20px;
+    cursor:pointer;
+}
+
+.card-body {
+    border-style:double;
+    border-width:5px;
+    border-color:darkblue;
+}
+
+.goldCounter {
+    position:relative;
+    top:-340px;
+    left:0;
+    font-weight:bold;
+    font-size:25px;
+    color:gold;
+    float:right;
+    border-style:solid;
+    border-color:gold;
+    border-width:6px;
+    padding:10px;
+}
+
+.store {
+    object-fit:cover;
+}
+
+.stats {
+    border-style:double;
+    border-width:6px;
+    border-color:white;
+    font-size:18px;
+    color:green;
+    background-color:lightblue;
+    padding:10px;
+    position:relative;
+    top:40px;
+    left:50px;
+    font-weight:bold;
+    width:auto;
 }
