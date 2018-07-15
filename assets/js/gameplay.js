@@ -1,6 +1,6 @@
 var hero = {
     basicInfo: {name:"",sex:"",race:"",class:"",age:""},
-    stats: {level:1,experience:0,health:0,attack:0,defense:0,magic:0,speed:0,reputation:0,alignment:0},
+    stats: {level:1,experience:0,health:0,attack:0,defense:0,magic:0,speed:0,reputation:0,alignment:0,currentHealth:0},
     inventory: {gold:100,equipment:[],potions:[],},
     equipped: {head:1,body:1,legs:1,feet:1,hands:1,weapon:1,},
     ability: {passive:[],active:[]},
@@ -20,6 +20,96 @@ var turnLeft = 100;
 var questText = ["helping an old elven lady cross the moat.","saving a fish from drowning.","posing for a fully nude portrait.","testing experimental potions for the alchemist.","eating hot wings with Sean Evans.",
                 "joining a peaceful protest against King Dragon's reign.","getting sidetracked from your main mission.","milking some uncomfortably affectionate cows.","writing unfunny puns for the game creator.",
                 "saying hello to Al Pacino's little friend.","impersonating Chuck Norris at a quinceanera.","being in a shake-weight commercial","participating in a Donald Trump look-alike competition",]
+
+var minionName = ["Seymour","Zombie","Rob Zombie","Pumbrella","Nightmare Mushroom","Witch","Rock Troll","Mountain Troll","Cyclops","Ogre","Werewolf","Mutant Engineer","Hellhound","Hunter","Chimera","Griffin","Qilin","Cookie Monster","Sully","Mikey"]
+var skillArray = ["1","2","3","4","5"];
+var monster = "";
+
+//refresh stats
+function refreshStats(){
+    statsMod.health = Math.floor(3+hero.stats.level)/4*hero.stats.health;
+    statsMod.attack = Math.floor(hero.stats.attack*(4+hero.stats.level)/5*(1+(6*hero.equipped.weapon+hero.equipped.hands+2*hero.equipped.body)/100));
+    statsMod.defense = Math.floor(hero.stats.defense*(4+hero.stats.level)/5*(1+(3*hero.equipped.body+3*hero.equipped.legs+2*hero.equipped.head+hero.equipped.feet)/100));
+    statsMod.magic = Math.floor(hero.stats.magic*(4+hero.stats.level)/5*(1+(5*hero.equipped.hands+2*hero.equipped.legs+2*hero.equipped.head)/100));
+    statsMod.speed = Math.floor(hero.stats.speed*(4+hero.stats.level)/5*(1+(5*hero.equipped.feet+2*hero.equipped.head+hero.equipped.body+hero.equipped.legs)/100));
+    $("#maxExp").html(hero.stats.level*100);
+    $("#currentExp").html(hero.stats.experience);
+    $("#maxHealth").html(statsMod.health);
+    $("#maxMana").html(statsMod.magic);
+}
+
+//combat
+var combat = {
+    1 : function(){
+        if (hero.stats.currentHealth===0){
+            hero.stats.currentHealth = statsMod.health;
+        }
+        var monsterDamage = statsMod.attack - minionStats.defense;
+        if (monsterDamage<10){
+            monsterDamage = 10;
+        }
+        alert("You attacked "+minionName[monster-1]+" for "+monsterDamage+" damage!");
+        minionStats.health -= monsterDamage;
+        $("#enemyhp").html(minionStats.health);
+        if (minionStats.health<=0){
+            alert("You have defeated "+minionName[monster-1]+"! You have earned "+minionStats.exp+" experience points and "+minionStats.gold+" gold!");
+            hero.inventory.gold += minionStats.gold;
+            hero.stats.experience += minionStats.exp;
+            if(hero.stats.experience >= hero.stats.level*100){
+                hero.stats.experience -= hero.stats.level*100;
+                hero.stats.level++;
+                alert("Congratulations! You have gained a level!")
+                refreshStats();
+                $("#lvl").html(hero.stats.level);
+                hero.stats.currentHealth = statsMod.health;
+                $("#currentHealth").html(hero.stats.currentHealth);
+            }
+            $("#currentExp").html(hero.stats.experience);
+            gamemap();
+
+        }else{
+        var playerDamage = minionStats.attack - statsMod.defense;
+        if (playerDamage<10){
+            playerDamage = 10;
+        }
+        alert(minionName[monster-1]+" attacked you for "+playerDamage+" damage!");
+        console.log(hero.stats.currentHealth);
+        hero.stats.currentHealth -= playerDamage;
+        $("#currentHealth").html(hero.stats.currentHealth);
+        if (hero.stats.currentHealth<=0){
+            alert("You have fainted...");
+            turnLeft -= 5;
+            $("#currentTurn").html(turnLeft);
+            refreshStats();
+            gamemap();
+            hero.stats.currentHealth = statsMod.health;
+            $("#currentHealth").html(hero.stats.currentHealth);
+            alert("You have recouperated after resting for 5 days, be careful out there!")
+        }
+        
+    }
+}
+}
+
+var minionLevel = Math.ceil(Math.random()*hero.stats.level*4);
+var minionStats = {
+    health : 0,
+    attack : 0,
+    defense : 0,
+    speed : 0,
+    exp : 0,
+    gold : 0,  
+}
+
+var statsMod = {
+    health : 0,
+    attack : 0,
+    defense : 0,
+    magic : 0,
+    speed : 0,
+}
+
+
 //Warrior
 function createWarrior(){
     hero.stats.health = 1000;
@@ -138,6 +228,7 @@ function gamemap(){
     $(".block8").append("<img class='iconSmaller' src='assets/images/boss7.png'/>");
     $(".block9").append("<img class='iconSmaller' src='assets/images/boss8.png'/>");
     $(".gamescreen").append("<button class='btn-primary btn-lg shop'>"+"Magical Emporium"+"</button>");
+    document.onkeyup = null;
     $(".shop").on("click", function(){
         shop();
     })
@@ -146,6 +237,9 @@ function gamemap(){
     })
     $("#sleep").on("click", function(){
         camp();
+    })
+    $("#minion").on("click", function(){
+        battle();
     })
 }
 
@@ -161,16 +255,50 @@ function menu(){
 
 //do a quest
 function quest(){
-    var questReward = Math.floor(Math.random()*20+20)*hero.stats.level;
+    var questReward = Math.floor(Math.random()*50+50)*hero.stats.level;
     hero.inventory.gold += questReward;
     turnLeft -= 1;
     $("#currentTurn").html(turnLeft);
     alert("You've earned "+questReward+" gold by "+questText[Math.floor(Math.random()*questText.length)]);  
 }
 
+//minion battle interface
+function battle(){
+    //generate minion stats
+    minionLevel = Math.ceil(Math.random()*hero.stats.level*4);
+        minionStats = {
+        health : Math.ceil(Math.random()*(1000*(4+minionLevel)/8)),
+        attack : Math.ceil(Math.random()*(300*(4+minionLevel)/8)),
+        defense : Math.ceil(Math.random()*(150*(4+minionLevel)/8)),
+        speed : Math.ceil(Math.random()*(50*(4+minionLevel)/8)),
+        exp : Math.ceil(Math.random()*(100*(4+minionLevel)/4))+50,
+        gold : Math.ceil(Math.random()*(30*(4+minionLevel)/6)),
+    }
+    turnLeft -= 1;
+    $("#currentTurn").html(turnLeft);
+    refreshStats();
+    $("#quest").off('click');
+    $("#sleep").off('click');
+    $("#minion").off('click');
+    $(".gamescreen").empty().css("background-image", "url(assets/images/battleMinion.jpg)");
+        monster = Math.ceil(Math.random()*20);
+    $(".gamescreen").append("<img class='minionImage' src='assets/images/monster"+monster+".png'/>");
+    $(".gamescreen").append("<h2 style='text-align:center; margin-top:380px; color:red; font-weight:bold;' class='encounter'>"+"You have encountered "+minionName[monster-1]+"!");
+    $(".encounter").prepend("<h2 style='text-align:center; font-weight:bold;'>Enemy HP - "+"<span id='enemyhp'>"+minionStats.health+"</span></h2>");
+
+    document.onkeyup = function(){
+        if(skillArray.includes(event.key)){
+            var skill = event.key;
+            combat[skill]();
+            }
+        }  
+    }
+
+
 //make camp
 function camp(){
-    $("#currentHealth").html(hero.stats.health);
+    $("#currentHealth").html(statsMod.health);
+    hero.stats.currentHealth = statsMod.health;
     turnLeft -= 1;
     $("#currentTurn").html(turnLeft);
     alert("You are now fully rested. Get to work, "+hero.basicInfo.name+"!!!");
@@ -180,6 +308,7 @@ function camp(){
 function actionbar(){
     $(".action").append("<div class='col-lg-7 skills'>"+"</div>");
     $(".skills").append("<div class='skill skill1'>"+"1"+"</div>");
+    $(".skill1").append("<img type='attack' class='skillIcon' src='assets/images/attack.png'/>")
     $(".skills").append("<div class='skill skill2'>"+"2"+"</div>");
     $(".skills").append("<div class='skill skill3'>"+"3"+"</div>");
     $(".skills").append("<div class='skill skill4'>"+"4"+"</div>");
@@ -207,6 +336,7 @@ function actionbar(){
 function shop(){
     $("#quest").off('click');
     $("#sleep").off('click');
+    $("#minion").off('click');
     $(".gamescreen").empty().css("background-image", "url(assets/images/store.jpg)");
     $(".gamescreen").append("<button class='btn-primary btn-lg back'>"+"Leave"+"</button>").append("<h1 id='shopTitle'>"+"Magical Emporium"+"</h1>")
     $(".gamescreen").append("<div class='card card1' style='width: 7rem;'>"+"<img class='card-img-top' src='assets/images/weapon.png' alt='weapon'>"+"<div class='card-body'>"+"<p class='card-text'>"+"Upgrade Weapon"+"</p>"+"<div class='card-text'>"+"<p class='card-text'>"+upgradeCost.weapon+" G"+"</p>"+"<p class='card-text'>"+"LVL-"+hero.equipped.weapon+"</p>"+"</div>"+"</div>");
@@ -216,10 +346,11 @@ function shop(){
     $(".gamescreen").append("<div class='card card5' style='width: 7rem;'>"+"<img class='card-img-top' src='assets/images/leggings.png' alt='legs'>"+"<div class='card-body'>"+"<p class='card-text'>"+"Upgrade Leggings"+"</p>"+"<div class='card-text'>"+"<p class='card-text'>"+upgradeCost.legs+" G"+"</p>"+"<p class='card-text'>"+"LVL-"+hero.equipped.legs+"</p>"+"</div>"+"</div>");
     $(".gamescreen").append("<div class='card card6' style='width: 7rem;'>"+"<img class='card-img-top' src='assets/images/boots.png' alt='feet'>"+"<div class='card-body'>"+"<p class='card-text'>"+"Upgrade Boots"+"</p>"+"<div class='card-text'>"+"<p class='card-text'>"+upgradeCost.feet+" G"+"</p>"+"<p class='card-text'>"+"LVL-"+hero.equipped.feet+"</p>"+"</div>"+"</div>");
     $(".gamescreen").append("<div class='goldCounter rounded'>"+hero.inventory.gold+" G"+"</div>");
-    $(".gamescreen").append("<span class='stats'>"+"ATTACK - "+Math.floor(hero.stats.attack*(4+hero.stats.level)/5*(1+(6*hero.equipped.weapon+hero.equipped.hands+2*hero.equipped.body)/100))+"</span>");
-    $(".gamescreen").append("<span class='stats'>"+"DEFENSE - "+Math.floor(hero.stats.defense*(4+hero.stats.level)/5*(1+(3*hero.equipped.body+3*hero.equipped.legs+2*hero.equipped.head+hero.equipped.feet)/100))+"</span>");
-    $(".gamescreen").append("<span class='stats'>"+"MAGIC - "+Math.floor(hero.stats.magic*(4+hero.stats.level)/5*(1+(5*hero.equipped.hands+2*hero.equipped.legs+2*hero.equipped.head)/100))+"</span>");
-    $(".gamescreen").append("<span class='stats'>"+"SPEED - "+Math.floor(hero.stats.speed*(4+hero.stats.level)/5*(1+(5*hero.equipped.feet+2*hero.equipped.head+hero.equipped.body+hero.equipped.legs)/100))+"</span>");
+    refreshStats();
+    $(".gamescreen").append("<span class='stats'>"+"ATTACK - "+statsMod.attack+"</span>");
+    $(".gamescreen").append("<span class='stats'>"+"DEFENSE - "+statsMod.defense+"</span>");
+    $(".gamescreen").append("<span class='stats'>"+"MAGIC - "+statsMod.magic+"</span>");
+    $(".gamescreen").append("<span class='stats'>"+"SPEED - "+statsMod.speed+"</span>");
     $(".back").on("click", function(){
         gamemap();
     })
@@ -229,7 +360,7 @@ function shop(){
         if (hero.inventory.gold >= upgradeCost[slot]){
             hero.inventory.gold -= upgradeCost[slot];
             hero.equipped[slot] += 1;
-            upgradeCost[slot] += 10;
+            upgradeCost[slot] += 5;
             shop();
         }
 

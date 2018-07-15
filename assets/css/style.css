@@ -361,3 +361,31 @@ div.block9 {
     font-weight:bold;
     width:auto;
 }
+
+.skillIcon {
+    height:90px;
+    width:90px;
+    position:relative;
+    top:-30px;
+    left:-5px;
+}
+
+.minionImage {
+    height:400px;
+    width:400px;
+    margin:auto;
+    position:absolute;
+    left:200px;
+}
+
+.encounter {
+    text-align:center; 
+    margin-top:430px; 
+    color:red; 
+    font-weight:bold;
+    border-style:solid;
+    border-color:white;
+    background-color:greenyellow;
+    padding:5px;
+    padding-top:none;
+}
