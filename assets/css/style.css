@@ -330,9 +330,9 @@ div.block9 {
 }
 
 .goldCounter {
-    position:relative;
-    top:-340px;
-    left:0;
+    position:absolute;
+    top:20px;
+    right:20px;
     font-weight:bold;
     font-size:25px;
     color:gold;

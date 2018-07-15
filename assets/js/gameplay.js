@@ -16,7 +16,7 @@ var upgradeCost = {
 }
 
 var turnLeft = 100;
-
+var difficulty = 4;
 var questText = ["helping an old elven lady cross the moat.","saving a fish from drowning.","posing for a fully nude portrait.","testing experimental potions for the alchemist.","eating hot wings with Sean Evans.",
                 "joining a peaceful protest against King Dragon's reign.","getting sidetracked from your main mission.","milking some uncomfortably affectionate cows.","writing unfunny puns for the game creator.",
                 "saying hello to Al Pacino's little friend.","impersonating Chuck Norris at a quinceanera.","being in a shake-weight commercial","participating in a Donald Trump look-alike competition",]
@@ -36,6 +36,18 @@ function refreshStats(){
     $("#currentExp").html(hero.stats.experience);
     $("#maxHealth").html(statsMod.health);
     $("#maxMana").html(statsMod.magic);
+}
+
+//basic boss stats
+var bossStat = {
+    health: 1000,
+    attack: 400,
+    defense: 200,
+    magic: 200,
+    speed: 150,
+    exp: 300,
+    gold: 500,
+    name: "",
 }
 
 //combat
@@ -91,7 +103,60 @@ var combat = {
 }
 }
 
-var minionLevel = Math.ceil(Math.random()*hero.stats.level*4);
+//boss fight
+var bossfight = {
+    1 : function(){
+        if (hero.stats.currentHealth===0){
+            hero.stats.currentHealth = statsMod.health;
+        }
+        var bossDamage = statsMod.attack - bossStat.defense;
+        if (bossDamage<10*difficulty){
+            bossDamage = 10*difficulty;
+        }
+        alert("You attacked "+minionName[monster-1]+" for "+monsterDamage+" damage!");
+        minionStats.health -= monsterDamage;
+        $("#enemyhp").html(minionStats.health);
+        if (minionStats.health<=0){
+            alert("You have defeated "+minionName[monster-1]+"! You have earned "+minionStats.exp+" experience points and "+minionStats.gold+" gold!");
+            hero.inventory.gold += minionStats.gold;
+            hero.stats.experience += minionStats.exp;
+            if(hero.stats.experience >= hero.stats.level*100){
+                hero.stats.experience -= hero.stats.level*100;
+                hero.stats.level++;
+                alert("Congratulations! You have gained a level!")
+                refreshStats();
+                $("#lvl").html(hero.stats.level);
+                hero.stats.currentHealth = statsMod.health;
+                $("#currentHealth").html(hero.stats.currentHealth);
+            }
+            $("#currentExp").html(hero.stats.experience);
+            gamemap();
+
+        }else{
+        var playerDamage = minionStats.attack - statsMod.defense;
+        if (playerDamage<10){
+            playerDamage = 10;
+        }
+        alert(minionName[monster-1]+" attacked you for "+playerDamage+" damage!");
+        console.log(hero.stats.currentHealth);
+        hero.stats.currentHealth -= playerDamage;
+        $("#currentHealth").html(hero.stats.currentHealth);
+        if (hero.stats.currentHealth<=0){
+            alert("You have fainted...");
+            turnLeft -= 5;
+            $("#currentTurn").html(turnLeft);
+            refreshStats();
+            gamemap();
+            hero.stats.currentHealth = statsMod.health;
+            $("#currentHealth").html(hero.stats.currentHealth);
+            alert("You have recouperated after resting for 5 days, be careful out there!")
+        }
+        
+    }
+}
+}
+
+var minionLevel = Math.ceil(Math.random()*hero.stats.level*difficulty);
 var minionStats = {
     health : 0,
     attack : 0,
@@ -265,7 +330,7 @@ function quest(){
 //minion battle interface
 function battle(){
     //generate minion stats
-    minionLevel = Math.ceil(Math.random()*hero.stats.level*4);
+    minionLevel = Math.ceil(Math.random()*hero.stats.level*difficulty);
         minionStats = {
         health : Math.ceil(Math.random()*(1000*(4+minionLevel)/8)),
         attack : Math.ceil(Math.random()*(300*(4+minionLevel)/8)),
