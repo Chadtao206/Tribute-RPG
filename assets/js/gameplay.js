@@ -53,7 +53,7 @@ function refreshStats(){
 
 //basic boss stats
 var bossStat = {
-    health: 1,
+    health: 2000,
     attack: 200,
     defense: 100,
     magic: 100,
