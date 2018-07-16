@@ -53,7 +53,7 @@ function refreshStats(){
 
 //basic boss stats
 var bossStat = {
-    health: 2000,
+    health: 1,
     attack: 200,
     defense: 100,
     magic: 100,
@@ -166,10 +166,25 @@ var combat = {
     }
 }
 }
-//end game
-function endgame(){
-    $(".gamescreen").empty().append("<h1 class='endgame' style='font-weight:bold; text-align:center;'>Hero, You have defeated King Dragon and saved the kingdom! Thank you for playing Tribute!!!")
+//update map
+var bossStatus = {
+    1: true,
+    2: true,
+    3: true,
+    4: true,
+    5: true,
+    6: true,
+    7: true,
+    8: true,
 }
+function updateMap(){
+    for (i=1;i<9;i++){
+        if (bossStatus[i]){
+    }else{$(".block"+(i+1)).html("<img class='iconSmaller' src='assets/images/dead.png'/>");
+    }
+    }
+}
+
 //boss fight
 var bossfight = {
     1 : function(){
@@ -209,6 +224,7 @@ var bossfight = {
                 $("#currentTurn").html("<i class='fas fa-infinity'></i>");
                 $("#currentTurn").removeAttr("id");
             }else{
+            bossStatus[currentBoss] = false;
             currentBoss += 1;
             general = bossData[currentBoss];
             if (currentBoss === 8){
@@ -414,6 +430,7 @@ function gamemap(){
     $(".block7").append("<img class='iconSmaller' src='assets/images/boss6.png'/>");
     $(".block8").append("<img class='iconSmaller' src='assets/images/boss7.png'/>");
     $(".block9").append("<img class='iconSmaller' src='assets/images/boss8.png'/>");
+    updateMap();
     $(".gamescreen").append("<button class='btn-primary btn-lg shop'>"+"Magical Emporium"+"</button>");
     document.onkeyup = null;
     $(".skill1").off("click");
