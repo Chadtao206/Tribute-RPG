@@ -15,8 +15,7 @@ var upgradeCost = {
     weapon:10*hero.equipped.weapon,
 }
 
-var turnLeft = 100;
-var difficulty = 4;
+var turnLeft = 200;
 var questText = ["helping an old elven lady cross the moat.","saving a fish from drowning.","posing for a fully nude portrait.","testing experimental potions for the alchemist.","eating hot wings with Sean Evans.",
                 "joining a peaceful protest against King Dragon's reign.","getting sidetracked from your main mission.","milking some uncomfortably affectionate cows.","writing unfunny puns for the game creator.",
                 "saying hello to Al Pacino's little friend.","impersonating Chuck Norris at a quinceanera.","being in a shake-weight commercial","participating in a Donald Trump look-alike competition",]
@@ -25,13 +24,27 @@ var minionName = ["Seymour","Zombie","Rob Zombie","Pumbrella","Nightmare Mushroo
 var skillArray = ["1","2","3","4","5"];
 var monster = "";
 
+//boss array
+var bossData = {
+    1 : {name:"Flying Centipede", difficulty: 4, source:"assets/images/boss1.png"},
+    2 : {name:"Gorgon Grave-Robber", difficulty: 10, source:"assets/images/boss2.png"},
+    3 : {name:"DeathScythe", difficulty: 18, source:"assets/images/boss3.png"},
+    4 : {name:"Abominable Butcher", difficulty: 30, source:"assets/images/boss4.png"},
+    5 : {name:"Reaper", difficulty: 45, source:"assets/images/boss5.png"},
+    6 : {name:"The Puppeteer", difficulty: 65, source:"assets/images/boss6.png"}, 
+    7 : {name:"Reanimated Sentinel", difficulty: 100, source:"assets/images/boss7.png"},
+    8 : {name:"King Dragon", difficulty: 150, source:"assets/images/boss8.png"}
+}
+var currentBoss = 1;
+var general = bossData[currentBoss];
+var easterEggCounter = 0;
 //refresh stats
 function refreshStats(){
-    statsMod.health = Math.floor(3+hero.stats.level)/4*hero.stats.health;
-    statsMod.attack = Math.floor(hero.stats.attack*(4+hero.stats.level)/5*(1+(6*hero.equipped.weapon+hero.equipped.hands+2*hero.equipped.body)/100));
-    statsMod.defense = Math.floor(hero.stats.defense*(4+hero.stats.level)/5*(1+(3*hero.equipped.body+3*hero.equipped.legs+2*hero.equipped.head+hero.equipped.feet)/100));
-    statsMod.magic = Math.floor(hero.stats.magic*(4+hero.stats.level)/5*(1+(5*hero.equipped.hands+2*hero.equipped.legs+2*hero.equipped.head)/100));
-    statsMod.speed = Math.floor(hero.stats.speed*(4+hero.stats.level)/5*(1+(5*hero.equipped.feet+2*hero.equipped.head+hero.equipped.body+hero.equipped.legs)/100));
+    statsMod.health = Math.floor((1+hero.stats.level)/2*hero.stats.health);
+    statsMod.attack = Math.floor(hero.stats.attack*(3+hero.stats.level)/4*(1+(6*hero.equipped.weapon+hero.equipped.hands+2*hero.equipped.body)/100));
+    statsMod.defense = Math.floor(hero.stats.defense*(3+hero.stats.level)/4*(1+(3*hero.equipped.body+3*hero.equipped.legs+2*hero.equipped.head+hero.equipped.feet)/100));
+    statsMod.magic = Math.floor(hero.stats.magic*(3+hero.stats.level)/4*(1+(5*hero.equipped.hands+2*hero.equipped.legs+2*hero.equipped.head)/100));
+    statsMod.speed = Math.floor(hero.stats.speed*(3+hero.stats.level)/4*(1+(5*hero.equipped.feet+2*hero.equipped.head+hero.equipped.body+hero.equipped.legs)/100));
     $("#maxExp").html(hero.stats.level*100);
     $("#currentExp").html(hero.stats.experience);
     $("#maxHealth").html(statsMod.health);
@@ -40,14 +53,62 @@ function refreshStats(){
 
 //basic boss stats
 var bossStat = {
-    health: 1000,
-    attack: 400,
-    defense: 200,
-    magic: 200,
-    speed: 150,
-    exp: 300,
+    health: 1500,
+    attack: 200,
+    defense: 100,
+    magic: 100,
+    speed: 75,
+    exp: 500,
     gold: 500,
-    name: "",
+}
+
+
+
+var criticalM = false;
+var criticalP = false;
+//critical hit minion
+function criticalMinion(){
+    var roll1 = Math.ceil(Math.random()*100);
+    var roll2 = Math.ceil(Math.random()*100);
+    criticalM = false;
+    criticalP = false;
+    if (statsMod.speed/minionStats.speed+9 >= roll1){
+        criticalM = true;
+    }
+    if (minionStats.speed/statsMod.speed+9 >= roll2){
+        criticalP = true;
+    }
+}
+//critical hit boss
+function criticalBoss(){
+    var roll1 = Math.ceil(Math.random()*100);
+    var roll2 = Math.ceil(Math.random()*100);
+    criticalM = false;
+    criticalP = false;
+    if (statsMod.speed/bossMod.speed+9 >= roll1){
+        criticalM = true;
+    }
+    if (bossMod.speed/statsMod.speed+9 >= roll2){
+        criticalP = true;
+    }
+}
+
+//level up
+function level(){
+    if(hero.stats.experience >= hero.stats.level*100){
+        hero.stats.experience -= hero.stats.level*100;
+        hero.stats.level++;
+        alert("Congratulations! You have gained a level!")
+        refreshStats();
+        $("#lvl").html(hero.stats.level);
+        hero.stats.currentHealth = statsMod.health;
+        $("#currentHealth").html(hero.stats.currentHealth);
+        $("#currentMana").html(statsMod.magic);
+    }
+    $("#currentExp").html(hero.stats.experience);
+    if(hero.stats.experience >= hero.stats.level*100){
+        level();
+    }
 }
 
 //combat
@@ -56,36 +117,39 @@ var combat = {
         if (hero.stats.currentHealth===0){
             hero.stats.currentHealth = statsMod.health;
         }
-        var monsterDamage = statsMod.attack - minionStats.defense;
+        var multM = 1;
+        var multP = 1;
+        var youAttack = "You attacked ";
+        var attackYou = " attacked you for ";
+        criticalMinion();
+        if (criticalM){
+            multM = 2.5;
+            var youAttack = "You critically hit "
+        }
+        if (criticalP){
+            multP = 1.5;
+            var attackYou = " critically hit you for "
+        }
+        var monsterDamage = statsMod.attack*multM - minionStats.defense;
         if (monsterDamage<10){
             monsterDamage = 10;
         }
-        alert("You attacked "+minionName[monster-1]+" for "+monsterDamage+" damage!");
+        alert(youAttack+minionName[monster-1]+" for "+monsterDamage+" damage!");
         minionStats.health -= monsterDamage;
         $("#enemyhp").html(minionStats.health);
         if (minionStats.health<=0){
             alert("You have defeated "+minionName[monster-1]+"! You have earned "+minionStats.exp+" experience points and "+minionStats.gold+" gold!");
             hero.inventory.gold += minionStats.gold;
             hero.stats.experience += minionStats.exp;
-            if(hero.stats.experience >= hero.stats.level*100){
-                hero.stats.experience -= hero.stats.level*100;
-                hero.stats.level++;
-                alert("Congratulations! You have gained a level!")
-                refreshStats();
-                $("#lvl").html(hero.stats.level);
-                hero.stats.currentHealth = statsMod.health;
-                $("#currentHealth").html(hero.stats.currentHealth);
-            }
-            $("#currentExp").html(hero.stats.experience);
+            level();
             gamemap();
 
         }else{
-        var playerDamage = minionStats.attack - statsMod.defense;
+        var playerDamage = minionStats.attack*multP - statsMod.defense;
         if (playerDamage<10){
             playerDamage = 10;
         }
-        alert(minionName[monster-1]+" attacked you for "+playerDamage+" damage!");
-        console.log(hero.stats.currentHealth);
+        alert(minionName[monster-1]+attackYou+playerDamage+" damage!");
         hero.stats.currentHealth -= playerDamage;
         $("#currentHealth").html(hero.stats.currentHealth);
         if (hero.stats.currentHealth<=0){
@@ -102,43 +166,62 @@ var combat = {
     }
 }
 }
-
+//end game
+function endgame(){
+    $(".gamescreen").empty().append("<h1 class='endgame' style='font-weight:bold; text-align:center;'>Hero, You have defeated King Dragon and saved the kingdom! Thank you for playing Tribute!!!")
+}
 //boss fight
 var bossfight = {
     1 : function(){
         if (hero.stats.currentHealth===0){
             hero.stats.currentHealth = statsMod.health;
         }
-        var bossDamage = statsMod.attack - bossStat.defense;
-        if (bossDamage<10*difficulty){
-            bossDamage = 10*difficulty;
+        var multM = 1;
+        var multP = 1;
+        var youAttack = "You attacked ";
+        var attackYou = " attacked you for ";
+        criticalBoss();
+        if (criticalM){
+            multM = 2.5;
+            var youAttack = "You critically hit "
         }
-        alert("You attacked "+minionName[monster-1]+" for "+monsterDamage+" damage!");
-        minionStats.health -= monsterDamage;
-        $("#enemyhp").html(minionStats.health);
-        if (minionStats.health<=0){
-            alert("You have defeated "+minionName[monster-1]+"! You have earned "+minionStats.exp+" experience points and "+minionStats.gold+" gold!");
-            hero.inventory.gold += minionStats.gold;
-            hero.stats.experience += minionStats.exp;
-            if(hero.stats.experience >= hero.stats.level*100){
-                hero.stats.experience -= hero.stats.level*100;
-                hero.stats.level++;
-                alert("Congratulations! You have gained a level!")
-                refreshStats();
-                $("#lvl").html(hero.stats.level);
-                hero.stats.currentHealth = statsMod.health;
-                $("#currentHealth").html(hero.stats.currentHealth);
+        if (criticalP){
+            multP = 1.5;
+            var attackYou = " critically hit you for "
+        }
+        var bossDamage = statsMod.attack*multM - bossMod.defense;
+        if (bossDamage<10){
+            bossDamage = 10;
+        }
+        alert(youAttack+general.name+" for "+bossDamage+" damage!");
+        bossMod.health -= bossDamage;
+        $("#enemyhp").html(bossMod.health);
+        if (bossMod.health<=0){
+            if (currentBoss === 8){
+                alert("you have won! King Dragon has been defeated! You are now free to wander the land and enjoy the spoils of your victory! You can also fight King Dragon again with increased difficulty.");
             }
-            $("#currentExp").html(hero.stats.experience);
+            alert("You have defeated "+general.name+"! You have earned "+bossMod.exp+" experience points and "+bossMod.gold+" gold!");
+            hero.inventory.gold += bossMod.gold;
+            hero.stats.experience += bossMod.exp;
+            if (currentBoss === 8){
+                general.difficulty = Math.ceil(general.difficulty*1.5);
+                easterEggCounter++;
+            }else{
+            currentBoss += 1;
+            general = bossData[currentBoss];
+            if (currentBoss === 8){
+                $("#general").html("Final Battle");
+            }
+            }
+            level();
             gamemap();
 
         }else{
-        var playerDamage = minionStats.attack - statsMod.defense;
-        if (playerDamage<10){
-            playerDamage = 10;
+        var playerDamage = bossMod.attack*multP - statsMod.defense;
+        if (playerDamage<10*general.difficulty){
+            playerDamage = 10*general.difficulty;
         }
-        alert(minionName[monster-1]+" attacked you for "+playerDamage+" damage!");
-        console.log(hero.stats.currentHealth);
+        alert(general.name+attackYou+playerDamage+" damage!");
         hero.stats.currentHealth -= playerDamage;
         $("#currentHealth").html(hero.stats.currentHealth);
         if (hero.stats.currentHealth<=0){
@@ -156,7 +239,7 @@ var bossfight = {
 }
 }
 
-var minionLevel = Math.ceil(Math.random()*hero.stats.level*difficulty);
+var minionLevel = Math.ceil(Math.random()*hero.stats.level*general.difficulty);
 var minionStats = {
     health : 0,
     attack : 0,
@@ -273,6 +356,43 @@ function intro(){
 
 //create game map
 function gamemap(){
+    if (easterEggCounter>=10){
+        $("#quest").off('click');
+        $("#sleep").off('click');
+        $("#minion").off('click');
+        $("#general").off('click');
+        alert("Muhahahahahaha!!!!");
+        alert("Muhahahahahaha!!!!");
+        alert("Muhahahahahaha!!!!");
+        $(".gamescreen").empty().css("background-image", "url(assets/images/battleBoss.jpg)");
+        $(".gamescreen").append("<div id='bonus1' class='bonus' style='display:none; font-size:30px; color:white'>That was quite a show you've put on, Champion...</div>");
+        $(".gamescreen").append("<div id='bonus2' class='bonus' style='display:none; font-size:30px; color:white'>All your efforts, to defeat this puppet of mine... Did you really believe it would be this easy?</div>")
+        $(".gamescreen").append("<div id='bonus3' class='bonus' style='display:none; font-size:30px; color:white'>King Dragon was merely a pawn, you will now face ME, the true ruler of this realm - </div>")
+        $(".gamescreen").append("<div id='bonus4' class='bonus' style='display:none; font-size:30px; color:white'>HIGH-KING TRONALD DUMP!!!</div>");
+        $("#bonus1").fadeIn(3000, function(){
+            $("#bonus2").fadeIn(4000, function(){
+                $("#bonus3").fadeIn(4000, function(){
+                    $("#bonus4").fadeIn(5000, function(){
+                        $(".gamescreen").empty().append("<img class='minionImage' src='assets/images/easterEggBoss.jpg'/>");
+                        $(".gamescreen").append("<h2 style='text-align:center; margin-top:380px; color:red; font-weight:bold;' class='encounter'>"+"You have encountered High-King Tronald Dump!");
+                        $(".encounter").prepend("<h2 style='text-align:center; font-weight:bold;'>Enemy HP - "+"<span id='enemyhp'>???</span></h2>");
+                    });
+                });
+            });
+        });
+        $(".skill1").on("click", function(){
+            alert("High-King Tronald Dump rigs the game and kills you instantly.")
+            $("body").html("<h1 class='ending' style='text-align:center; display:none; margin-top:200px; font-size:100px; font-weight:bold; color:red;'>GAME OVER</h1>");
+            $(".ending").fadeIn(4000);
+        })
+        document.onkeyup = function(){
+            if(skillArray.includes(event.key)){
+                alert("High-King Tronald Dump rigs the game and kills you instantly.")
+                $("body").html("<h1 class='ending' style='text-align:center; display:none; margin-top:200px; font-size:100px; font-weight:bold; color:red;'>GAME OVER</h1>");
+                $(".ending").fadeIn(4000);
+            }
+        }
+    }else{
     $(".gamescreen").html("<img src='assets/images/kingdom.jpg' class='gamebg background'/>");
     $(".gamescreen").append("<div class='boss block1'>"+"</div>");
     $(".gamescreen").append("<div class='boss block2'>"+"</div>");
@@ -294,6 +414,7 @@ function gamemap(){
     $(".block9").append("<img class='iconSmaller' src='assets/images/boss8.png'/>");
     $(".gamescreen").append("<button class='btn-primary btn-lg shop'>"+"Magical Emporium"+"</button>");
     document.onkeyup = null;
+    $(".skill1").off("click");
     $(".shop").on("click", function(){
         shop();
     })
@@ -306,6 +427,10 @@ function gamemap(){
     $("#minion").on("click", function(){
         battle();
     })
+    $("#general").on("click", function(){
+        bossBattle();
+    })
+}
 }
 
 //create game menu
@@ -320,45 +445,95 @@ function menu(){
 
 //do a quest
 function quest(){
-    var questReward = Math.floor(Math.random()*50+50)*hero.stats.level;
+    var questReward = Math.floor(Math.random()*100+50)*(hero.stats.level+general.difficulty);
     hero.inventory.gold += questReward;
     turnLeft -= 1;
     $("#currentTurn").html(turnLeft);
     alert("You've earned "+questReward+" gold by "+questText[Math.floor(Math.random()*questText.length)]);  
 }
 
+//generate minion stats
+function minionGenerate(){
+    minionLevel = Math.ceil(Math.random()*(hero.stats.level*general.difficulty)/3);
+        minionStats = {
+        health : Math.ceil(Math.random()*(1000*(4+minionLevel)/8)),
+        attack : Math.ceil(Math.random()*(200*(4+minionLevel)/8)),
+        defense : Math.ceil(Math.random()*(100*(4+minionLevel)/8)),
+        speed : Math.ceil(Math.random()*(50*(4+minionLevel)/8)),
+        exp : Math.ceil(Math.random()*(100*(4+minionLevel)/4))+general.difficulty*10,
+        gold : Math.ceil(Math.random()*(30*(4+minionLevel)/6)),
+    }
+    console.log(minionLevel);
+    console.log(minionStats);
+}
 //minion battle interface
 function battle(){
     //generate minion stats
-    minionLevel = Math.ceil(Math.random()*hero.stats.level*difficulty);
-        minionStats = {
-        health : Math.ceil(Math.random()*(1000*(4+minionLevel)/8)),
-        attack : Math.ceil(Math.random()*(300*(4+minionLevel)/8)),
-        defense : Math.ceil(Math.random()*(150*(4+minionLevel)/8)),
-        speed : Math.ceil(Math.random()*(50*(4+minionLevel)/8)),
-        exp : Math.ceil(Math.random()*(100*(4+minionLevel)/4))+50,
-        gold : Math.ceil(Math.random()*(30*(4+minionLevel)/6)),
-    }
+    minionGenerate();
     turnLeft -= 1;
     $("#currentTurn").html(turnLeft);
     refreshStats();
     $("#quest").off('click');
     $("#sleep").off('click');
     $("#minion").off('click');
+    $("#general").off('click');
     $(".gamescreen").empty().css("background-image", "url(assets/images/battleMinion.jpg)");
         monster = Math.ceil(Math.random()*20);
     $(".gamescreen").append("<img class='minionImage' src='assets/images/monster"+monster+".png'/>");
     $(".gamescreen").append("<h2 style='text-align:center; margin-top:380px; color:red; font-weight:bold;' class='encounter'>"+"You have encountered "+minionName[monster-1]+"!");
     $(".encounter").prepend("<h2 style='text-align:center; font-weight:bold;'>Enemy HP - "+"<span id='enemyhp'>"+minionStats.health+"</span></h2>");
-
+    $(".skill1").on("click", function(){
+        combat[$(this).attr("ability")]();
+    })
     document.onkeyup = function(){
         if(skillArray.includes(event.key)){
             var skill = event.key;
             combat[skill]();
-            }
-        }  
+        }
+    }  
+}
+
+//generate boss
+var bossMod = {};
+function bossGenerate(){
+    bossMod = {
+        health: bossStat.health*general.difficulty,
+        attack: bossStat.attack*general.difficulty,
+        defense: bossStat.defense*general.difficulty,
+        magic: bossStat.magic*general.difficulty,
+        speed: bossStat.speed*general.difficulty,
+        exp: bossStat.exp*general.difficulty,
+        gold: bossStat.gold*general.difficulty,
     }
 
+}
+
+//boss battle interface
+function bossBattle(){
+    bossGenerate();
+    console.log(general);
+    console.log(bossMod);
+    turnLeft -= 1;
+    $("#currentTurn").html(turnLeft);
+    refreshStats();
+    $("#quest").off('click');
+    $("#sleep").off('click');
+    $("#minion").off('click');
+    $("#general").off('click');
+    $(".gamescreen").empty().css("background-image", "url(assets/images/battleBoss.jpg)");
+    $(".gamescreen").append("<img class='minionImage' src='"+general.source+"'/>");
+    $(".gamescreen").append("<h2 style='text-align:center; margin-top:380px; color:red; font-weight:bold;' class='encounter'>"+"You have encountered "+general.name+"!");
+    $(".encounter").prepend("<h2 style='text-align:center; font-weight:bold;'>Enemy HP - "+"<span id='enemyhp'>"+bossMod.health+"</span></h2>");
+    $(".skill1").on("click", function(){
+        bossfight[$(this).attr("ability")]();
+    })
+    document.onkeyup = function(){
+        if(skillArray.includes(event.key)){
+            var skill = event.key;
+            bossfight[skill]();
+        }
+    } 
+}
 
 //make camp
 function camp(){
@@ -372,12 +547,12 @@ function camp(){
 //create action bars
 function actionbar(){
     $(".action").append("<div class='col-lg-7 skills'>"+"</div>");
-    $(".skills").append("<div class='skill skill1'>"+"1"+"</div>");
+    $(".skills").append("<div ability='1' class='skill skill1'>"+"1"+"</div>");
     $(".skill1").append("<img type='attack' class='skillIcon' src='assets/images/attack.png'/>")
-    $(".skills").append("<div class='skill skill2'>"+"2"+"</div>");
-    $(".skills").append("<div class='skill skill3'>"+"3"+"</div>");
-    $(".skills").append("<div class='skill skill4'>"+"4"+"</div>");
-    $(".skills").append("<div class='skill skill5'>"+"5"+"</div>");
+    $(".skills").append("<div ability='2' class='skill skill2'>"+"2"+"</div>");
+    $(".skills").append("<div ability='3' class='skill skill3'>"+"3"+"</div>");
+    $(".skills").append("<div ability='4' class='skill skill4'>"+"4"+"</div>");
+    $(".skills").append("<div ability='5' class='skill skill5'>"+"5"+"</div>");
     $(".action").append("<div class='col-lg-5 consumable'>"+"</div>");
     $(".consumable").append("<div class='items item1'"+"</div>");
     $(".consumable").append("<div class='items item2'"+"</div>");
@@ -402,35 +577,61 @@ function shop(){
     $("#quest").off('click');
     $("#sleep").off('click');
     $("#minion").off('click');
+    $("#general").off('click');
     $(".gamescreen").empty().css("background-image", "url(assets/images/store.jpg)");
     $(".gamescreen").append("<button class='btn-primary btn-lg back'>"+"Leave"+"</button>").append("<h1 id='shopTitle'>"+"Magical Emporium"+"</h1>")
-    $(".gamescreen").append("<div class='card card1' style='width: 7rem;'>"+"<img class='card-img-top' src='assets/images/weapon.png' alt='weapon'>"+"<div class='card-body'>"+"<p class='card-text'>"+"Upgrade Weapon"+"</p>"+"<div class='card-text'>"+"<p class='card-text'>"+upgradeCost.weapon+" G"+"</p>"+"<p class='card-text'>"+"LVL-"+hero.equipped.weapon+"</p>"+"</div>"+"</div>");
-    $(".gamescreen").append("<div class='card card2' style='width: 7rem;'>"+"<img class='card-img-top' src='assets/images/helmet.png' alt='head'>"+"<div class='card-body'>"+"<p class='card-text'>"+"Upgrade Helmet"+"</p>"+"<div class='card-text'>"+"<p class='card-text'>"+upgradeCost.head+" G"+"</p>"+"<p class='card-text'>"+"LVL-"+hero.equipped.head+"</p>"+"</div>"+"</div>");
-    $(".gamescreen").append("<div class='card card3' style='width: 7rem;'>"+"<img class='card-img-top' src='assets/images/armor.png' alt='body'>"+"<div class='card-body'>"+"<p class='card-text'>"+"Upgrade Armor"+"</p>"+"<div class='card-text'>"+"<p class='card-text'>"+upgradeCost.body+" G"+"</p>"+"<p class='card-text'>"+"LVL-"+hero.equipped.body+"</p>"+"</div>"+"</div>");
-    $(".gamescreen").append("<div class='card card4' style='width: 7rem;'>"+"<img class='card-img-top' src='assets/images/gauntlet.png' alt='hands'>"+"<div class='card-body'>"+"<p class='card-text'>"+"Upgrade Gauntlets"+"</p>"+"<div class='card-text'>"+"<p class='card-text'>"+upgradeCost.hands+" G"+"</p>"+"<p class='card-text'>"+"LVL-"+hero.equipped.hands+"</p>"+"</div>"+"</div>");
-    $(".gamescreen").append("<div class='card card5' style='width: 7rem;'>"+"<img class='card-img-top' src='assets/images/leggings.png' alt='legs'>"+"<div class='card-body'>"+"<p class='card-text'>"+"Upgrade Leggings"+"</p>"+"<div class='card-text'>"+"<p class='card-text'>"+upgradeCost.legs+" G"+"</p>"+"<p class='card-text'>"+"LVL-"+hero.equipped.legs+"</p>"+"</div>"+"</div>");
-    $(".gamescreen").append("<div class='card card6' style='width: 7rem;'>"+"<img class='card-img-top' src='assets/images/boots.png' alt='feet'>"+"<div class='card-body'>"+"<p class='card-text'>"+"Upgrade Boots"+"</p>"+"<div class='card-text'>"+"<p class='card-text'>"+upgradeCost.feet+" G"+"</p>"+"<p class='card-text'>"+"LVL-"+hero.equipped.feet+"</p>"+"</div>"+"</div>");
+    $(".gamescreen").append("<div class='card card1' style='width: 7rem;'>"+"<img class='card-img-top' src='assets/images/weapon.png' >"+"<div alt='weapon' class='card-body'>"+"<p class='card-text'>"+"Upgrade Weapon"+"</p>"+"<div class='card-text'>"+"<p class='card-text'>"+upgradeCost.weapon+" G"+"</p>"+"<p class='card-text'>"+"LVL-"+hero.equipped.weapon+"</p>"+"</div>"+"</div>"+"<div class='buy10' alt='weapon'>Upgrade x 10</div>"+"<div class='buy100' alt='weapon'>Upgrade x 100</div>");
+    $(".gamescreen").append("<div class='card card2' style='width: 7rem;'>"+"<img class='card-img-top' src='assets/images/helmet.png' >"+"<div alt='head' class='card-body'>"+"<p class='card-text'>"+"Upgrade Helmet"+"</p>"+"<div class='card-text'>"+"<p class='card-text'>"+upgradeCost.head+" G"+"</p>"+"<p class='card-text'>"+"LVL-"+hero.equipped.head+"</p>"+"</div>"+"</div>"+"<div class='buy10' alt='head'>Upgrade x 10</div>"+"<div class='buy100' alt='head'>Upgrade x 100</div>");
+    $(".gamescreen").append("<div class='card card3' style='width: 7rem;'>"+"<img class='card-img-top' src='assets/images/armor.png' >"+"<div alt='body' class='card-body'>"+"<p class='card-text'>"+"Upgrade Armor"+"</p>"+"<div class='card-text'>"+"<p class='card-text'>"+upgradeCost.body+" G"+"</p>"+"<p class='card-text'>"+"LVL-"+hero.equipped.body+"</p>"+"</div>"+"</div>"+"<div class='buy10' alt='body'>Upgrade x 10</div>"+"<div class='buy100' alt='body'>Upgrade x 100</div>");
+    $(".gamescreen").append("<div class='card card4' style='width: 7rem;'>"+"<img class='card-img-top' src='assets/images/gauntlet.png' >"+"<div alt='hands' class='card-body'>"+"<p class='card-text'>"+"Upgrade Gauntlets"+"</p>"+"<div class='card-text'>"+"<p class='card-text'>"+upgradeCost.hands+" G"+"</p>"+"<p class='card-text'>"+"LVL-"+hero.equipped.hands+"</p>"+"</div>"+"</div>"+"<div class='buy10' alt='hands'>Upgrade x 10</div>"+"<div class='buy100' alt='hands'>Upgrade x 100</div>");
+    $(".gamescreen").append("<div class='card card5' style='width: 7rem;'>"+"<img class='card-img-top' src='assets/images/leggings.png' >"+"<div alt='legs' class='card-body'>"+"<p class='card-text'>"+"Upgrade Leggings"+"</p>"+"<div class='card-text'>"+"<p class='card-text'>"+upgradeCost.legs+" G"+"</p>"+"<p class='card-text'>"+"LVL-"+hero.equipped.legs+"</p>"+"</div>"+"</div>"+"<div class='buy10' alt='legs'>Upgrade x 10</div>"+"<div class='buy100' alt='legs'>Upgrade x 100</div>");
+    $(".gamescreen").append("<div class='card card6' style='width: 7rem;'>"+"<img class='card-img-top' src='assets/images/boots.png' >"+"<div alt='feet' class='card-body'>"+"<p class='card-text'>"+"Upgrade Boots"+"</p>"+"<div class='card-text'>"+"<p class='card-text'>"+upgradeCost.feet+" G"+"</p>"+"<p class='card-text'>"+"LVL-"+hero.equipped.feet+"</p>"+"</div>"+"</div>"+"<div class='buy10' alt='feet'>Upgrade x 10</div>"+"<div class='buy100' alt='feet'>Upgrade x 100</div>");
     $(".gamescreen").append("<div class='goldCounter rounded'>"+hero.inventory.gold+" G"+"</div>");
     refreshStats();
-    $(".gamescreen").append("<span class='stats'>"+"ATTACK - "+statsMod.attack+"</span>");
-    $(".gamescreen").append("<span class='stats'>"+"DEFENSE - "+statsMod.defense+"</span>");
-    $(".gamescreen").append("<span class='stats'>"+"MAGIC - "+statsMod.magic+"</span>");
-    $(".gamescreen").append("<span class='stats'>"+"SPEED - "+statsMod.speed+"</span>");
+    $(".gamescreen").append("<div style='text-align:center;' class='statsContainer'></div>");
+    $(".statsContainer").append("<span class='stats'>"+"ATTACK - "+statsMod.attack+"</span>");
+    $(".statsContainer").append("<span class='stats'>"+"DEFENSE - "+statsMod.defense+"</span>");
+    $(".statsContainer").append("<span class='stats'>"+"MAGIC - "+statsMod.magic+"</span>");
+    $(".statsContainer").append("<span class='stats'>"+"SPEED - "+statsMod.speed+"</span>");
     $(".back").on("click", function(){
         gamemap();
     })
     //upgrade gear
-    $(".card").on("click", function(){
-        var slot = $(this).children("img").attr('alt');
+    $(".card-body").on("click", function(){
+        var slot = $(this).attr('alt');
         if (hero.inventory.gold >= upgradeCost[slot]){
             hero.inventory.gold -= upgradeCost[slot];
             hero.equipped[slot] += 1;
             upgradeCost[slot] += 5;
             shop();
         }
-
     })
 
+    //upgrade gear x 10
+    $(".buy10").on("click", function(){
+        var slot = $(this).attr('alt');
+        for (var i = 0; i<10;i++){
+        if (hero.inventory.gold >= upgradeCost[slot]){
+            hero.inventory.gold -= upgradeCost[slot];
+            hero.equipped[slot] += 1;
+            upgradeCost[slot] += 5;
+            shop();
+        }
+        }
+    })
+
+    //upgrade gear x 100
+    $(".buy100").on("click", function(){
+        var slot = $(this).attr('alt');
+        for (var i = 0; i<100;i++){
+        if (hero.inventory.gold >= upgradeCost[slot]){
+            hero.inventory.gold -= upgradeCost[slot];
+            hero.equipped[slot] += 1;
+            upgradeCost[slot] += 5;
+            shop();
+        }
+        }
+    })
 }
 
 //shop items
@@ -450,7 +651,7 @@ function interface(){
     $(".level").append("<div class='row'>"+"EXP : "+"<span id='currentExp'>"+"</span>"+"  /  "+"<span id='maxExp'>"+"</span>"+"</div>");
     $(".topbar").append("<div class='col-lg-2 class'>"+"</div>");
     $(".topbar").append("<div class='col-lg-3 turns'>"+"</div>");
-    $(".turns").append("<div class='row'>"+"Turns Until Final Battle  "+"<span id='currentTurn' style='padding-left:100px; font-size:30px;'>"+"100"+"</span>"+"</div>");
+    $(".turns").append("<div class='row'>"+"Turns Until Final Battle  "+"<span id='currentTurn' style='padding-left:100px; font-size:30px;'>"+"200"+"</span>"+"</div>");
     $(".container").append("<div class='row midsection'>"+"</div>");
     $(".midsection").append("<div class='col-lg-9 gamescreen border border-warning'>"+"</div>");
     $(".midsection").append("<div class='col-lg-3 menu border border-warning'>"+"</div>");
@@ -483,11 +684,6 @@ function interface(){
 
     $("#healer").on("click", function(){
         createHealer();
-    })
-
-//Game Interface
-    $(".begin").on("click", function(){
-        alert("clicked");
     })
 
 }
