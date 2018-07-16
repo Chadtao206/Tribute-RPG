@@ -41,10 +41,10 @@ var easterEggCounter = 0;
 //refresh stats
 function refreshStats(){
     statsMod.health = Math.floor((1+hero.stats.level)/2*hero.stats.health);
-    statsMod.attack = Math.floor(hero.stats.attack*(3+hero.stats.level)/4*(1+(6*hero.equipped.weapon+hero.equipped.hands+2*hero.equipped.body)/100));
-    statsMod.defense = Math.floor(hero.stats.defense*(3+hero.stats.level)/4*(1+(3*hero.equipped.body+3*hero.equipped.legs+2*hero.equipped.head+hero.equipped.feet)/100));
-    statsMod.magic = Math.floor(hero.stats.magic*(3+hero.stats.level)/4*(1+(5*hero.equipped.hands+2*hero.equipped.legs+2*hero.equipped.head)/100));
-    statsMod.speed = Math.floor(hero.stats.speed*(3+hero.stats.level)/4*(1+(5*hero.equipped.feet+2*hero.equipped.head+hero.equipped.body+hero.equipped.legs)/100));
+    statsMod.attack = Math.floor(hero.stats.attack*(2+hero.stats.level)/3*(1+(6*hero.equipped.weapon+hero.equipped.hands+2*hero.equipped.body)/100));
+    statsMod.defense = Math.floor(hero.stats.defense*(2+hero.stats.level)/3*(1+(3*hero.equipped.body+3*hero.equipped.legs+2*hero.equipped.head+hero.equipped.feet)/100));
+    statsMod.magic = Math.floor(hero.stats.magic*(2+hero.stats.level)/3*(1+(5*hero.equipped.hands+2*hero.equipped.legs+2*hero.equipped.head)/100));
+    statsMod.speed = Math.floor(hero.stats.speed*(2+hero.stats.level)/3*(1+(5*hero.equipped.feet+2*hero.equipped.head+hero.equipped.body+hero.equipped.legs)/100));
     $("#maxExp").html(hero.stats.level*100);
     $("#currentExp").html(hero.stats.experience);
     $("#maxHealth").html(statsMod.health);
@@ -53,7 +53,7 @@ function refreshStats(){
 
 //basic boss stats
 var bossStat = {
-    health: 1500,
+    health: 2000,
     attack: 200,
     defense: 100,
     magic: 100,
@@ -206,6 +206,8 @@ var bossfight = {
             if (currentBoss === 8){
                 general.difficulty = Math.ceil(general.difficulty*1.5);
                 easterEggCounter++;
+                $("#currentTurn").html("<i class='fas fa-infinity'></i>");
+                $("#currentTurn").removeAttr("id");
             }else{
             currentBoss += 1;
             general = bossData[currentBoss];
