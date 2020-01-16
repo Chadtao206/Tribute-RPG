@@ -1,404 +1,416 @@
 .button {
-    padding: 15px 25px;
-    font-size: 24px;
-    text-align: center;
-    cursor: pointer;
-    outline: none;
-    color: #fff;
-    background-color: #4CAF50;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 9px #999;
-  }
-  
-  .button:hover {background-color: #3e8e41}
-  
-  .button:active {
-    background-color: #3e8e41;
-    box-shadow: 0 5px #666;
-    transform: translateY(4px);
-  }
+  padding: 15px 25px;
+  font-size: 24px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #4caf50;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+
+.button:hover {
+  background-color: #3e8e41;
+}
+
+.button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
 
 .topbar {
-    height:100px;
-    background:#294F6D;
-    margin: 10px;
+  height: 100px;
+  background: #294f6d;
+  margin: 10px;
 }
 
 .action {
-    height:150px;
-    background:#294F6D;
-    margin: 10px;
+  height: 150px;
+  background: #294f6d;
+  margin: 10px;
 }
 
 .midsection {
-    height:500px;
-    margin: 10px;
+  height: 500px;
+  margin: 10px;
 }
 
 .gamescreen {
-    background: #3B99E2;
-    height:500px;
-    border-width: 10px;
-    background-size:cover;
+  background: #3b99e2;
+  height: 500px;
+  border-width: 10px;
+  background-size: cover;
 }
 
 .menu {
-    background:#316D9B;
-    height:500px;
-    border-width: 10px;
+  background: #316d9b;
+  height: 500px;
+  border-width: 10px;
 }
-  
-  body {
-    background-image: url("https://www.desktopbackground.org/p/2010/09/05/74986_2d-game-backgrounds_1380x820_h.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-  }
 
-  div.box {
-    background-color: #ffffff;
-    opacity: 0.6;
-  }
+body {
+  background-image: url("https://www.desktopbackground.org/p/2010/09/05/74986_2d-game-backgrounds_1380x820_h.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 
-  .border {
-      border-width:5px;
-  }
+div.box {
+  background-color: #ffffff;
+  opacity: 0.6;
+}
 
-  .status, .level, .turns {
-      font-size:20px;
-      font-weight:bold;
-      color:greenyellow;
-      margin:10px;
-  }
+.border {
+  border-width: 5px;
+}
 
-  .classIcon {
-      height:200px;
-      width:170px;
-      padding:10px;
-      margin:10px;
-      margin-top:100px;
-      background-color: white;
-      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-      float:left;
+.status,
+.level,
+.turns {
+  font-size: 20px;
+  font-weight: bold;
+  color: greenyellow;
+  margin: 10px;
+}
 
-  }
+.classIcon {
+  height: 200px;
+  width: 170px;
+  padding: 10px;
+  margin: 10px;
+  margin-top: 100px;
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  float: left;
+}
 
-  .icon {
-      height:150px;
-      width:150px;
-      cursor: pointer;
-  }
+.icon {
+  height: 150px;
+  width: 150px;
+  cursor: pointer;
+}
 
-  .title {
-      text-align:center;
-      padding-top:10px;
-      font-family: 'Galada', cursive;
-      font-size: 20px;
-      color: rgb(158, 110, 48);
-  }
+.title {
+  text-align: center;
+  padding-top: 10px;
+  font-family: "Galada", cursive;
+  font-size: 20px;
+  color: rgb(158, 110, 48);
+}
 
-  #chooseText {
-      text-align:center;
-      padding-top:400px;
-      font-family: 'Galada', cursive;
-      font-size: 35px;
-  }
+#chooseText {
+  text-align: center;
+  padding-top: 400px;
+  font-family: "Galada", cursive;
+  font-size: 35px;
+}
 
-  .iconSmall {
-      height: 90px;
-      width: 90px;
-      padding-top:6px;
-  }
+.iconSmall {
+  height: 90px;
+  width: 90px;
+  padding-top: 6px;
+}
 
-  .intro {
-    font-family: 'Galada', cursive;
-    font-size: 25px;
-  }
+.intro {
+  font-family: "Galada", cursive;
+  font-size: 25px;
+}
 
-  .begin {
-    margin: 10px 0 0 260px;
-  }
+.begin {
+  margin: 10px 0 0 260px;
+}
 
-  .menubox {
-    margin-bottom: 30px;
-  } 
+.menubox {
+  margin-bottom: 30px;
+}
 
-  .gamebg {
-    height:497px;
-    width:110%;
-    position: relative;
-    right:14px;
-  }
+.gamebg {
+  height: 497px;
+  width: 110%;
+  position: relative;
+  right: 14px;
+}
 
-  div.block1 {
-      border-color:black;
-      border-width:5px;
-      border-style:solid;
-      height:60px;
-      width:60px;
-      z-index: 1;;
-      position: relative;
-      bottom:180px;
-      left:90px;
-  }
+div.block1 {
+  border-color: black;
+  border-width: 5px;
+  border-style: solid;
+  height: 60px;
+  width: 60px;
+  z-index: 1;
+  position: relative;
+  bottom: 180px;
+  left: 90px;
+}
 
-  div.block2 {
-    border-color:black;
-    border-width:5px;
-    border-style:solid;
-    height:60px;
-    width:60px;
-    z-index: 1;;
-    position: relative;
-    bottom:240px;
-    left:190px;
+div.block2 {
+  border-color: black;
+  border-width: 5px;
+  border-style: solid;
+  height: 60px;
+  width: 60px;
+  z-index: 1;
+  position: relative;
+  bottom: 240px;
+  left: 190px;
 }
 
 div.block3 {
-    border-color:black;
-    border-width:5px;
-    border-style:solid;
-    height:60px;
-    width:60px;
-    z-index: 1;;
-    position: relative;
-    bottom:300px;
-    left:290px;
+  border-color: black;
+  border-width: 5px;
+  border-style: solid;
+  height: 60px;
+  width: 60px;
+  z-index: 1;
+  position: relative;
+  bottom: 300px;
+  left: 290px;
 }
 
 div.block4 {
-    border-color:black;
-    border-width:5px;
-    border-style:solid;
-    height:60px;
-    width:60px;
-    z-index: 1;;
-    position: relative;
-    bottom:360px;
-    left:390px;
+  border-color: black;
+  border-width: 5px;
+  border-style: solid;
+  height: 60px;
+  width: 60px;
+  z-index: 1;
+  position: relative;
+  bottom: 360px;
+  left: 390px;
 }
 
 div.block5 {
-    border-color:black;
-    border-width:5px;
-    border-style:solid;
-    height:60px;
-    width:60px;
-    z-index: 1;;
-    position: relative;
-    bottom:420px;
-    left:490px;
+  border-color: black;
+  border-width: 5px;
+  border-style: solid;
+  height: 60px;
+  width: 60px;
+  z-index: 1;
+  position: relative;
+  bottom: 420px;
+  left: 490px;
 }
 
 div.block6 {
-    border-color:black;
-    border-width:5px;
-    border-style:solid;
-    height:60px;
-    width:60px;
-    z-index: 1;;
-    position: relative;
-    bottom:480px;
-    left:590px;
+  border-color: black;
+  border-width: 5px;
+  border-style: solid;
+  height: 60px;
+  width: 60px;
+  z-index: 1;
+  position: relative;
+  bottom: 480px;
+  left: 590px;
 }
 
 div.block7 {
-    border-color:black;
-    border-width:5px;
-    border-style:solid;
-    height:60px;
-    width:60px;
-    z-index: 1;;
-    position: relative;
-    bottom:640px;
-    left:590px;
+  border-color: black;
+  border-width: 5px;
+  border-style: solid;
+  height: 60px;
+  width: 60px;
+  z-index: 1;
+  position: relative;
+  bottom: 640px;
+  left: 590px;
 }
 
 div.block8 {
-    border-color:black;
-    border-width:5px;
-    border-style:solid;
-    height:60px;
-    width:60px;
-    z-index: 1;;
-    position: relative;
-    bottom:700px;
-    left:450px;
+  border-color: black;
+  border-width: 5px;
+  border-style: solid;
+  height: 60px;
+  width: 60px;
+  z-index: 1;
+  position: relative;
+  bottom: 700px;
+  left: 450px;
 }
 
 div.block9 {
-    border-color:black;
-    border-width:5px;
-    border-style:solid;
-    height:60px;
-    width:60px;
-    z-index: 1;;
-    position: relative;
-    bottom:860px;
-    margin-bottom:-860px;
-    left:450px;
+  border-color: black;
+  border-width: 5px;
+  border-style: solid;
+  height: 60px;
+  width: 60px;
+  z-index: 1;
+  position: relative;
+  bottom: 860px;
+  margin-bottom: -860px;
+  left: 450px;
 }
 
 .iconSmaller {
-    height:50px;
-    width:50px;
-    padding:none;
-    background-color:wheat;
+  height: 50px;
+  width: 50px;
+  padding: none;
+  background-color: wheat;
 }
 
 .skills {
-    border-width:5px;
-    border-style:double;
-    border-color:white;
-    height:150px;
-    width:100%;
-    padding-left:35px;
+  border-width: 5px;
+  border-style: double;
+  border-color: white;
+  height: 150px;
+  width: 100%;
+  padding-left: 35px;
 }
 
 .skill {
-    border-width:5px;
-    border-style:solid;
-    border-color:#3B99E2;
-    height:100px;
-    width:100px;
-    float:left;
-    margin:4px;
-    margin-top:20px;
-    font-size:20px;
-    font-weight:bold;
-    color:white;
-    padding-left:5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #3b99e2;
+  height: 100px;
+  width: 100px;
+  float: left;
+  margin: 4px;
+  margin-top: 20px;
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  padding-left: 5px;
 }
 
 .items {
-    border-width:3px;
-    border-style:solid;
-    border-color:blanchedalmond;
-    height:50px;
-    width:50px;
-    float:left;
-    margin:1px;
-    font-size:10px;
-    font-weight:bold;
-    color:white;
+  border-width: 3px;
+  border-style: solid;
+  border-color: blanchedalmond;
+  height: 50px;
+  width: 50px;
+  float: left;
+  margin: 1px;
+  font-size: 10px;
+  font-weight: bold;
+  color: white;
 }
 
 .consumable {
-    padding-top:20px;
+  padding-top: 20px;
 }
 
 .shop {
-    position:absolute;
-    cursor: pointer;
-    top:20px;
+  position: absolute;
+  cursor: pointer;
+  top: 20px;
 }
 
 .back {
-    position:relative;
-    top:30px;
-    cursor:pointer;
-    z-index:1;
+  position: relative;
+  top: 30px;
+  cursor: pointer;
+  z-index: 1;
 }
 
 #shopTitle {
-    position:relative;
-    top:-40px;
-    padding-left:250px;
-    font-weight:bold;
-    font-family: 'Galada', cursive;
-    color:wheat;
-    font-size:40px;
+  position: relative;
+  top: -40px;
+  padding-left: 250px;
+  font-weight: bold;
+  font-family: "Galada", cursive;
+  color: wheat;
+  font-size: 40px;
 }
 
 .card-text {
-    font-size:10px;
-    font-weight:bold;
-    text-align:center;
+  font-size: 10px;
+  font-weight: bold;
+  text-align: center;
 }
 
 .card {
-    float:left;
-    margin-left:20px;
-    cursor:pointer;
+  float: left;
+  margin-left: 20px;
+  cursor: pointer;
 }
 
-.card-body, .buy10, .buy100 {
-    border-style:double;
-    border-width:5px;
-    border-color:darkblue;
+.card-body,
+.buy10,
+.buy100 {
+  border-style: double;
+  border-width: 5px;
+  border-color: darkblue;
 }
 
-.buy10, .buy100 {
-    font-size:10px;
-    font-weight:bold;
-    text-align:center;
-    padding-top:5px;
-    padding-bottom:5px;
+.buy10,
+.buy100 {
+  font-size: 10px;
+  font-weight: bold;
+  text-align: center;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 .goldCounter {
-    position:absolute;
-    top:20px;
-    right:20px;
-    font-weight:bold;
-    font-size:25px;
-    color:gold;
-    float:right;
-    border-style:solid;
-    border-color:gold;
-    border-width:6px;
-    padding:10px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-weight: bold;
+  font-size: 25px;
+  color: gold;
+  float: right;
+  border-style: solid;
+  border-color: gold;
+  border-width: 6px;
+  padding: 10px;
 }
 
 .store {
-    object-fit:cover;
+  object-fit: cover;
 }
 
 .stats {
-    border-style:double;
-    border-width:4px;
-    border-color:black;
-    font-size:15px;
-    color:green;
-    background-color:lightblue;
-    padding:10px;
-    font-weight:bold;
-    width:auto;
+  border-style: double;
+  border-width: 4px;
+  border-color: black;
+  font-size: 15px;
+  color: green;
+  background-color: lightblue;
+  padding: 10px;
+  font-weight: bold;
+  width: auto;
 }
 
 .statsContainer {
-    margin-top: 350px;
+  margin-top: 350px;
 }
 
 .skillIcon {
-    height:90px;
-    width:90px;
-    position:relative;
-    top:-30px;
-    left:-5px;
+  height: 90px;
+  width: 90px;
+  position: relative;
+  top: -30px;
+  left: -5px;
 }
 
 .minionImage {
-    height:380px;
-    width:380px;
-    margin:auto;
-    position:absolute;
-    left:200px;
+  height: 380px;
+  width: 380px;
+  margin: auto;
+  position: absolute;
+  left: 200px;
 }
 
 .encounter {
-    text-align:center; 
-    margin-top:430px; 
-    color:red; 
-    font-weight:bold;
-    border-style:solid;
-    border-color:white;
-    background-color:greenyellow;
-    padding:5px;
-    padding-top:none;
+  text-align: center;
+  margin-top: 430px;
+  color: red;
+  font-weight: bold;
+  border-style: solid;
+  border-color: white;
+  background-color: greenyellow;
+  padding: 5px;
+  padding-top: none;
 }
 
 .bonus {
-    text-align:center;
-    padding:10px;
+  text-align: center;
+  padding: 10px;
+}
+
+.diff {
+  text-align: center;
+  margin: 20px;
+  margin-top: 200px;
 }
